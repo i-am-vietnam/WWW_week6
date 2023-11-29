@@ -28,7 +28,7 @@ public class HomeController {
         Page<Post> postPage = postService.getAllPosts(pageable);
         model.addAttribute("postPage", postPage);
         model.addAttribute("newPost", new Post());
-        return "home";
+        return "authorPage";
     }
     @PostMapping("/addPost")
     public String addPost(@ModelAttribute("newPost") Post newPost, Principal principal) {
@@ -45,7 +45,7 @@ public class HomeController {
         Page<Post> postPage = postService.getAllPosts(updatedPageable);
         model.addAttribute("newPost", new Post());
         model.addAttribute("postPage", postPage);
-        return "home";
+        return "authorPage";
     }
 
 }

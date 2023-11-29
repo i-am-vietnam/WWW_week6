@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home Page</title>
+
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background: #f0f0f0;
+            font-family: Arial, sans-serif;
+        }
+        .container {
+            max-width: 800px;
+            margin: auto;
+            padding: 20px;
+        }
+        .post {
+            background: #fff;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            padding: 20px;
+            box-shadow: 0px 0px 10px rgba(0,0,0,0.1);
+        }
+        .post h3 {
+            margin-bottom: 10px;
+        }
+        .post p {
+            margin-bottom: 10px;
+        }
+        .post small {
+            display: block;
+            margin-bottom: 10px;
+        }
+        .post .btn {
+            margin-right: 10px;
+        }
+        .pagination {
+            justify-content: center;
+        }
+        form {
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0px 0px 10px rgba(0,0,0,0.1);
+        }
+        form .form-group {
+            margin-bottom: 10px;
+        }
+        form .form-group label {
+            font-weight: bold;
+        }
+        form .form-group input,
+        form .form-group textarea {
+            padding: 10px;
+            width: 100%;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        form button {
+            padding: 10px 20px;
+            border: none;
+            background: #007bff;
+            color: #fff;
+            border-radius: 4px;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="header">
+        <h1>Welcome to the Home Page</h1>
+        <a th:href="@{/authorPage/myPage}" class="btn btn-success mt-3 mb-3">Go to my wall</a>
+    </div>
+
+    <div th:each="post : ${postPage.content}" class="post">
+        <h3 th:text="${post.title}"></h3>
+        <p th:text="${post.content}"></p>
+        <small th:text="${#dates.format(post.createdAt, 'dd/MM/yyyy HH:mm')}"></small>
+        <a th:href="@{/authorPage/{authorId}(authorId=${post.author.email})}" class="btn btn-info">View Author</a>
+        <a th:href="@{/post/{postId}(postId=${post.id})}" class="btn btn-primary">View Post</a>
+    </div>
+
+    <ul class="pagination">
+        <li th:if="${postPage.number > 0}" class="page-item">
+            <a class="page-link" th:href="@{/home/page/{pageNumber}(pageNumber=${postPage.number - 1})}"><< Previous</a>
+        </li>
+        <li th:if="${postPage.number < postPage.totalPages - 1}" class="page-item">
+            <a class="page-link" th:href="@{/home/page/{pageNumber}(pageNumber=${postPage.number + 1})}">Next >></a>
+        </li>
+    </ul>
+
+    <form th:action="@{/home/addPost}" method="post" th:object="${newPost}" class="mt-5">
+        <div class="form-group">
+            <label for="title">Title:</label>
+            <input type="text" class="form-control" id="title" th:field="*{title}"/>
+        </div>
+        <div class="form-group">
+            <label for="content">Content:</label>
+            <textarea class="form-control" id="content" th:field="*{content}"></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary">Add Post</button>
+    </form>
+
+</div>
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.0.7/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+</body>
+</html>
